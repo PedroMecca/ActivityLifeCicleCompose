@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import br.edu.ifsp.scl.prdm.sc303500x.activitylifeciclecompose.ui.theme.ActivityLifeCicleComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,26 +41,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    var name by rememberSaveable { mutableStateOf ("") } //saveable mantém estado do valor
-                                                               // após quebra da tela
-    var age = rememberSaveable { mutableStateOf("") }
+fun MainScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
     Column (
         modifier = modifier.fillMaxSize()
     ) {
         TextField(
-            value = name,
+            value = mainViewModel.name,
             label = { Text("Name") },
             keyboardOptions =  KeyboardOptions( keyboardType =  KeyboardType.Text),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {name = it} //passa o conteudo da caixa de texto pro nome
+            onValueChange = {mainViewModel.updateName(it)} //passa o conteudo da caixa de texto pro nome
         )
         TextField(
-            value = age.value,
+            value = mainViewModel.age.toString(),
             label = { Text("Age") },
             keyboardOptions =  KeyboardOptions( keyboardType =  KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = {age.value = it}
+            onValueChange = {mainViewModel.updateAge(it.toInt())}
         )
     }
 }
