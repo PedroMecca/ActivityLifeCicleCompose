@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "br.edu.ifsp.scl.prdm.sc303500x.activitylifeciclecompose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "br.edu.ifsp.scl.prdm.sc303500x.activitylifeciclecompose"
