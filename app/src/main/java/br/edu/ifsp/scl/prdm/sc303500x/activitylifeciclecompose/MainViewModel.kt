@@ -20,13 +20,13 @@ class MainViewModel (val savedStateHandle: SavedStateHandle): ViewModel() {
         const val USER_KEY = "user"
     }
 
-    var age by mutableIntStateOf( 0)
-    private set
-
     fun updateName (name: String){
        _uiState.update {it.copy (name = name)}
+        savedStateHandle[USER_KEY] = _uiState.value.copy(name = name)
    }
     fun updateAge (age: Int?) {
-        _uiState.update { it.copy (age = age ?: 0) }
+        _uiState.update { it.copy (age = age ?: 0)
+        }
+        savedStateHandle[USER_KEY] = _uiState.value.copy(age = age ?: 0)
     }
 }
