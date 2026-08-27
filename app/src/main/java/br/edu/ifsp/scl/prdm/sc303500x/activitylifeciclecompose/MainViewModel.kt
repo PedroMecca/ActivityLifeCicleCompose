@@ -4,20 +4,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 
-class MainViewModel: ViewModel() {
-    var name by mutableStateOf("")
-    private set
+class MainViewModel (val savedStateHandle: SavedStateHandle): ViewModel() {
+    private val _uiState = MutableStateFlow(savedStateHandle[USER_KEY] ?: User ())
+    val uiState: StateFlow<User> = _uiState.asStateFlow()
+
+    private companion object{
+        const val USER_KEY = "user"
+    }
 
     var age by mutableIntStateOf( 0)
     private set
 
     fun updateName (name: String){
-       this.name = name
+       _uiState.update {it.copy (name = name)}
    }
     fun updateAge (age: Int?) {
-        this.age = age ?: 0
+        _uiState.update { it.copy (age = age ?: 0) }
     }
 }
